@@ -1,0 +1,32 @@
+{
+  "name": "expenses-graphql",
+  "version": "1.0.0",
+  "description": "Store Expenses in MongoDB using graphql and Node",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "build": "npm run clean && npm run babel -d ./src ./server -s",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "keywords": [
+    "graphql,node,mongo"
+  ],
+  "author": "Edgar Gamarra",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.11.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^14.6.0",
+    "mongodb": "^3.5.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "nodemon": "^2.0.2"
+  }
+}
