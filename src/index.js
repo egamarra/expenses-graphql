@@ -45,6 +45,9 @@ MongoClient.connect( process.env.MONGODB_URI ,{useNewUrlParser:true,useUnifiedTo
     const server = new ApolloServer({
         typeDefs,
         resolvers,
+        introspection: true,
+        tracing: true,
+        cacheControl: true,
         context: {Expenses: db.collection(process.env.MONGODB_COLLECTION),
         pubsub}
     });
