@@ -5,8 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
-    "build": "npm run clean && npm run babel -d ./src ./server -s",
+    "start": "node src/index.js",
+    "start-dev": "nodemon --exec babel-node src/index.js",
+    "build": "npm run clean && npm run babel -d ./src ./server -s", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
