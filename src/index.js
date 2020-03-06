@@ -1,14 +1,12 @@
 const {ApolloServer, PubSub} = require('apollo-server-express');
 const {MongoClient} = require('mongodb');
-const path = require('path');
-const pathGraphql = '/graphql';
-
+ 
 require('dotenv').config();
 
 //express
 const express = require('express');
 const app = express(); 
-app.use("/web", express.static(__dirname + '/public')); 
+app.use("/", express.static(__dirname + '/public')); 
 //0.- Configs
 if(!process.env.PORT){
     throw new Error('Set value for process.env.PORT');
@@ -39,7 +37,11 @@ const resolvers = {
 }
 
 // 3.- MongoDB
-MongoClient.connect( process.env.MONGODB_URI ,{useNewUrlParser:true,useUnifiedTopology: true}, function(err,client){
+MongoClient.connect( process.env.MONGODB_URI ,
+    {   useNewUrlParser:true,
+        useUnifiedTopology: true
+    },
+     function(err,client){
     if(err){
          
         throw err;
@@ -70,7 +72,7 @@ MongoClient.connect( process.env.MONGODB_URI ,{useNewUrlParser:true,useUnifiedTo
     //     console.log(`Good, 🚀 Server ready at ${JSON.stringify(server, null, 1)}` );        
     // });
     app.listen({ port: process.env.PORT }, () => {
-        console.log(`🚀  Server ready at http://localhost:4000`);
+        console.log(`🚀  Server ready at port ${process.env.PORT} ok`);
       });
         
 });

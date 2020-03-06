@@ -19,6 +19,7 @@ const typeDefs = gql`
 
     enum FrecuencyOfExpense {
         Diary
+        Weekly
         Monthly
         Yearly
     }

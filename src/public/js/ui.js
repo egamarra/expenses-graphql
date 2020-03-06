@@ -24,7 +24,7 @@ function getDataTypeOfExpense(){
 function getDataFrecuencyOfExpense(){
     return {
         selectText:'Choose Frecuency of Expense',
-        data:['Diary','Monthly','Yearly']
+        data:['Diary','Weekly','Monthly','Yearly']
     };
 }
 
