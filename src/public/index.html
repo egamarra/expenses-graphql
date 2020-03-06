@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
@@ -58,9 +58,23 @@
               <h3 class="mb-0">List of Expenses</h3>
           </div>
           <div class="card-body">
-            <table id="list-expenses" class="table table-bordered">
+            <!-- <table id="list-expenses" class="table table-bordered"> -->
               <!-- here goes our data! -->
-              </table>
+              <!-- </table> -->
+              <!-- demo root element -->
+                <div id="demo">
+                  <form id="search">
+                    <div class="form-group">
+                      <label for="query">Search:</label> 
+                     <input class="form-control" name="query" v-model="searchQuery">
+                    </div>
+                  </form>
+                  <demo-grid
+                    :data="gridData"
+                    :columns="gridColumns"
+                    :filter-key="searchQuery">
+                  </demo-grid>
+                </div>
           </div>
           <div class="card-footer">
             <a href="/graphql">Graphql query</a>
@@ -69,7 +83,63 @@
       </div>
   </div>  
 </div>
+ 
+<!-- component template -->
+<script type="text/x-template" id="grid-template">
+  <table class = "table table-bordered">
+    <thead class = "color-cabecera">
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          {{ key | capitalize }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+          {{entry[key]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>
+
+<!-- component form template -->
+<script type="text/x-template" id="expense-template">
+  <table class = "table table-bordered">
+    <thead class = "color-cabecera">
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          {{ key | capitalize }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+          {{entry[key]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    
     <script type="application/javascript" src="./js/ui.js"></script>
     <script type="application/javascript" src="./js/app.js"></script>
+    <script type="application/javascript" src="./js/app.vue.js"></script>
 </body>
 </html>
