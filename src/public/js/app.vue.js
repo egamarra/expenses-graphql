@@ -49,16 +49,112 @@ Vue.component('demo-grid', {
         this.sortKey = key
         this.sortOrders[key] = this.sortOrders[key] * -1
       }
+      ,
+      editExpense: function (ele) {
+        console.log(ele);
+        this.$parent.mode ='edit';
+        this.$parent.expenseEdit = {...ele };
+      },deleteExpense: function (item) {
+        console.log(item,'deleted');
+        
+      }
+    }
+  })
+  // Vue.component('expense-form', require('template/form-expense.vue').default);
+
+  Vue.component('expense-form', {
+    template: '#expense-template',
+    props: {
+      entity: Object,
+      "list-type-of-expense": Array,
+      "list-frecuency-of-expense": Array
+    },
+    data: function () {
+       
+      const r = new Expense();
+      r.amount = 44;
+      return r;
+    },
+    computed: {
+      filteredData: function () {
+         
+        return this.entity
+      }
+    },
+    filters: {
+      capitalize: function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+      }
+    },
+    mounted() {
+      this.init();
+    },
+    methods: {
+      init: function () {
+        console.log('mounted form component');
+        
+      },
+      onCancel: function (key) {
+         
+        this.$parent.cancel( );
+      },
+      submit: function(){
+        console.log('submited',this.entity); 
+        this.$parent.save({a:'Edgar'});
+        event.preventDefault();
+        
+      //   axios({
+      //     url: '/graphql',
+      //     method: 'post',
+      //     data: {
+      //     query: `mutation saveExpense{  
+      //         createExpense(description: "${this.entity.description}"
+      //         date: "${this.entity.date}"
+      //         typeOfExpense: ${this.entity.typeOfExpense}
+      //         frecuencyOfExpense:  ${this.entity.frecuencyOfExpense}
+      //         amount: ${this.entity.amount}
+      //         ){  
+      //         _id   
+      //         description  
+      //         amount   
+      //         date   
+      //         }  
+      //     }`
+      //     }
+      // })
+      // .then(r => {console.log(r.data);
+           
+      //     })
+      // .catch(function (error) {
+      //     console.log(error);
+      // });
+      }
     }
   })
   
+function Expense() {
+  return {
+    _id:'',
+    description:'',
+    amount:3.4,
+    date:null,
+    typeOfExpense:null,
+    frecuencyOfExpense:null
+  };
+}
+ 
   // bootstrap the demo
-  var demo = new Vue({
-    el: '#demo',
+  var app = new Vue({
+    el: '#root',
     data() 
     {  return {
+      showModal: false,
       searchQuery: '',
-      gridColumns: ['_id', 'description','amount','date','typeOfExpense'],
+      mode: 'list',
+      listTypeOfExpense:['Alimentation','Transport','Education','Others'],
+      listFrecuencyOfExpense: ['Diary','Weekly','Monthly','Yearly'],
+      expenseEdit: new Expense(),
+      gridColumns: ['_id','frecuencyOfExpense', 'description','amount','date','typeOfExpense','Actions'],
       gridData: [        
       ]
     }},
@@ -80,6 +176,7 @@ Vue.component('demo-grid', {
                             amount
                             date
                             typeOfExpense
+                            frecuencyOfExpense
                         }
                       }
                     `
@@ -92,54 +189,15 @@ Vue.component('demo-grid', {
               .catch(function (error) {
                 console.log(error);
               });
-        } 
-      },
-  })
-
-
-  var entity = new Vue({
-    el: '#expense',
-    data() 
-    {  return {
-        entity: {
-            _id: '',
-            description: ['_id', 'description','amount','date','typeOfExpense'],
-            amount: 0,
-            date: null,
-            typeOfExpense: null,
-            frecuencyOfExpense: null
-        }
-    }
-    },
-    methods:{        
-        save(){             
-                axios({
-                    url: '/graphql',
-                    method: 'post',
-                    data: {
-                    query: `mutation saveExpense{  
-                        createExpense(description: "${this.entity.description}"
-                        date: "${this.entity.date}"
-                        typeOfExpense: ${this.entity.typeOfExpense}
-                        frecuencyOfExpense:  ${this.entity.frecuencyOfExpense}
-                        amount: ${this.entity.amount}
-                        ){  
-                        _id   
-                        description  
-                        amount   
-                        date   
-                        }  
-                    }`
-                    }
-                })
-                .then(r => {console.log(r.data);
-                     
-                    })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        },
+        save(a){
+          console.log('event save',a);
+          console.dir(this.expenseEdit);
+        },
+        cancel(){
+          this.expenseEdit= new Expense()
+          this.mode = 'list';
         }
       },
   })
-
-  
+ 

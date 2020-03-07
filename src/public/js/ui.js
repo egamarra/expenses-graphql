@@ -1,4 +1,4 @@
-
+// no used
 window.onload = function() {
     getFrecuencyOfExpense();
     getTypeOfExpense();     
@@ -51,17 +51,17 @@ function populateGenericDropdown(id, source){
 
 
 
-document.querySelector("#saveExpenseForm").addEventListener("submit", function(e){
-        var formEl = document.forms.saveExpenseForm;
-        e.preventDefault();    //stop form from submitting
-        var formData = new FormData(formEl);
+// document.querySelector("#saveExpenseForm").addEventListener("submit", function(e){
+//         var formEl = document.forms.saveExpenseForm;
+//         e.preventDefault();    //stop form from submitting
+//         var formData = new FormData(formEl);
 
-        saveExpense(formData);
+//         saveExpense(formData);
 
-        populateTableExpenses();
+//         populateTableExpenses();
         
         
-});
+// });
 
 function saveExpense(formData) {
     var dataSend = {

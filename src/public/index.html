@@ -6,63 +6,25 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script data-main="js/app.vue" src="js/require.js"></script> -->
     <title>Expenses by Egamarra</title>
 </head>
 <body>
     
-<div class="container-fluid p-2">
-  <div class="row">
-      <div class="col-md-4"> 
-          <div class="card rounded-0">
-            <div class="card-header">
-                <h3 class="mb-0">Add Expense</h3>
-            </div>
-            <div class="card-body">
-                <form id="saveExpenseForm">
-                    <div class="form-group">
-                      <label for="description">Description:</label> 
-                      <input type="text" id="description" name="description" class="form-control add-todo" required >
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Amount:</label> 
-                        <input type="number" id="amount" class="form-control add-todo" required name="amount" min="0" value="0" step="0.1">
-                      </div>
-                      <div class="form-group">
-                        <label for="date">Date:</label> 
-                        <input type="date" id="date" class="form-control add-todo" required name="date" >
-                      </div>
-                    <div class="form-group" >
-                      <label for="typeOfExpense-ddl">Type of expense:</label>
-                        <select id="typeOfExpense-ddl" required name="typeOfExpense-ddl" class="form-control add-todo">
-                        </select>
-                      
-                    </div>
-                    <div class="form-group" >
-                        <label for="frecuencyOfExpense-ddl">Frecuency of expense:</label>
-                          <select id="frecuencyOfExpense-ddl" required name="frecuencyOfExpense-ddl" class="form-control add-todo">
-                          </select>
-                        
-                      </div>
-                    <button type="submit" class="btn submit">Submit</button>
-                  </form> 
-            
-        
-        
-            </div>        
-          </div> 
-      </div>   
-        
-      <div class="col-md-8">    
+<div class="container-fluid p-2" id="root">
+ 
+  <!-- <button v-if="mode =='edit'" id="show-list" class="btn color-cabecera" @click="mode  = 'list'">Show List</button> -->
+  <button v-if="mode =='list'" id="show-edit" class="btn color-cabecera " @click="mode  = 'edit'">Create</button>
+
+  <div class="row pt-2" v-if="mode =='list'">
+      <div class="col-md-12">    
         <div class="card rounded-0">
           <div class="card-header">
               <h3 class="mb-0">List of Expenses</h3>
           </div>
           <div class="card-body">
-            <!-- <table id="list-expenses" class="table table-bordered"> -->
-              <!-- here goes our data! -->
-              <!-- </table> -->
-              <!-- demo root element -->
-                <div id="demo">
+                <div >
                   <form id="search">
                     <div class="form-group">
                       <label for="query">Search:</label> 
@@ -82,11 +44,19 @@
         </div>   
       </div>
   </div>  
+ 
+  <!-- use the modal component, pass in the prop -->
+  <expense-form v-else-if="mode =='edit'"   
+  :entity="expenseEdit"
+  :list-type-of-expense="listTypeOfExpense"
+  :list-frecuency-of-expense="listFrecuencyOfExpense" >
+</expense-form>
+ 
 </div>
  
-<!-- component template -->
+<!-- component template List of Expenses -->
 <script type="text/x-template" id="grid-template">
-  <table class = "table table-bordered">
+  <table class = "table table-bordered table-responsive">
     <thead class = "color-cabecera">
       <tr>
         <th v-for="key in columns"
@@ -100,9 +70,22 @@
     </thead>
     <tbody>
       <tr v-for="entry in filteredData">
-        <td v-for="key in columns">
-          {{entry[key]}}
-        </td>
+ 
+        <td  >@{{ entry._id }}</td>
+                    <td   > {{ entry.frecuencyOfExpense }}</td>
+                    <td> {{ entry.description }}</td>
+                    <td> {{ entry.amount }}</td>
+                    <td> {{ entry.date }}</td>
+                    <td> {{ entry.typeOfExpense }}</td>
+                    <td  style="white-space: nowrap" class="align-middle ">
+                      <a class="btn color-cabecera" title="Edit"  role="button" @click.prevent="editExpense(entry)" >
+                        <i class=" fa fa-pencil-square-o" style="color:white;" aria-hidden="true"></i>
+                      </a>
+                      <a class="btn color-cabecera" title="Delete" role="button" @click.prevent="deleteExpense(entry)" >
+                        <i class=" fa fa-trash" style="color:white;" aria-hidden="true"></i>
+
+                      </a> 
+                    </td>
       </tr>
     </tbody>
   </table>
@@ -110,36 +93,52 @@
 
 <!-- component form template -->
 <script type="text/x-template" id="expense-template">
-  <table class = "table table-bordered">
-    <thead class = "color-cabecera">
-      <tr>
-        <th v-for="key in columns"
-          @click="sortBy(key)"
-          :class="{ active: sortKey == key }">
-          {{ key | capitalize }}
-          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-          </span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="entry in filteredData">
-        <td v-for="key in columns">
-          {{entry[key]}}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card rounded-0 mt-2">
+    <div class="card-header">
+        <h3 class="mb-0">Add Expense</h3>
+    </div>
+    <div class="card-body">
+          
+        <form id="saveExpenseForm"   @submit="submit()">
+          <div class="form-group">
+            <label for="description">Description:</label> 
+            <input type="text" v-model="entity.description" id="description" name="description" class="form-control add-todo" required >
+          </div>
+          <div class="form-group">
+              <label for="amount">Amount:</label> 
+              <input type="number" v-model="entity.amount" id="amount" class="form-control add-todo" required name="amount" min="0" value="0" step="0.1">
+            </div>
+            <div class="form-group">
+              <label for="date">Date:</label> 
+              <input type="date" id="date" v-model="entity.date" class="form-control add-todo" required name="date" >
+            </div>
+          <div class="form-group" >
+            <label for="typeOfExpense-ddl">Type of expense:</label>
+               
+              <select required name="typeOfExpense-ddl" v-model="entity.typeOfExpense" class="form-control add-todo">
+                <option selected="selected" value="">Choose Type of Expense</option>
+                <option v-for="resource in listTypeOfExpense" v-bind:value="resource">{{ resource }}</option>
+              </select>
+            
+          </div>
+          <div class="form-group" >
+              <label for="frecuencyOfExpense-ddl">Frecuency of expense:</label>           
+                <select required  name="frecuencyOfExpense-ddl" v-model="entity.frecuencyOfExpense" class="form-control add-todo">
+                  <option selected="selected" value="">Choose Frecuency of Expense</option>
+                  <option v-for="resource in listFrecuencyOfExpense" v-bind:value="resource">{{ resource }}</option>
+                </select>
+            </div>
+          <button type="submit" class="btn color-cabecera">Submit</button>
+          <!-- <button type="button" @click.prevent="onCancel" class="btn btn-default">Cancel</button> -->
+        </form>
+</div>        
+</div> 
+   
 </script>
-
-
-
-
+ 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
-    
-    <script type="application/javascript" src="./js/ui.js"></script>
-    <script type="application/javascript" src="./js/app.js"></script>
+     
     <script type="application/javascript" src="./js/app.vue.js"></script>
 </body>
 </html>
