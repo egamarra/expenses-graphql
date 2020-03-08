@@ -43,19 +43,19 @@ const typeDefs = gql`
 
     type Mutation{
         createExpense(            
-            description: String
-            date: String
-            typeOfExpense: TypeOfExpense!
-            frecuencyOfExpense: FrecuencyOfExpense!
-            amount: Float! 
+            description: String,
+            date: String,
+            typeOfExpense: TypeOfExpense!,
+            frecuencyOfExpense: FrecuencyOfExpense!,
+            amount: Float! ,
         ): Expense!
 
         editExpense(
-            _id: String!
-            description: String
-            date: String
-            typeOfExpense: TypeOfExpense!
-            frecuencyOfExpense: FrecuencyOfExpense!
+            _id: String!,
+            description: String,
+            date: String,
+            typeOfExpense: TypeOfExpense!,
+            frecuencyOfExpense: FrecuencyOfExpense!,
             amount: Float! 
         ):Expense
 

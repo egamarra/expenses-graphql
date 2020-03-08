@@ -15,10 +15,14 @@ const createExpense = async (parent, args, {Expenses, pubsub}, info) =>{
     return newExpense;
 }
 const editExpense = async (parent, args, {Expenses}, info) =>{
-    const _id = args._id;
-    delete args._id;
-    await Expenses.updateOne({"_id":ObjectId(_id)}, {$set: args});
-    return args;
+     
+        const _id = args._id;
+        delete args._id;
+        await Expenses.updateOne({ "_id": ObjectId(_id) }, { $set: args });
+        args._id = _id;
+        console.log('amce_Expenses returning fron node js editExpense',args);
+        return args;
+     
 }
 
 const deleteExpense = async (parent, args, {Expenses}, info) => {

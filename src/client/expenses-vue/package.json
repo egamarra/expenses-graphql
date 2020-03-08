@@ -2,9 +2,12 @@
   "name": "client-expense-js",
   "version": "1.0.0",
   "description": "Client using babel transpiler",
+  "private": true,
   "main": "js/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode development",
+    "produccion": "webpack -p",
+    "watch": "webpack --w --mode development"
   },
   "keywords": [
     "babel",
@@ -19,5 +22,11 @@
     "babel-loader": "^8.0.6",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-loader": "^15.9.0",
+    "vue-template": "^1.0.3",
+    "vue-template-compiler": "^2.6.11"
   }
 }

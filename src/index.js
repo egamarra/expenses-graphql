@@ -3,10 +3,11 @@ const {MongoClient} = require('mongodb');
  
 require('dotenv').config();
 
+
 //express
 const express = require('express');
 const app = express(); 
-app.use("/", express.static(__dirname + '/public')); 
+app.use("/", express.static(__dirname + '/client/expenses-vue/')); 
 //0.- Configs
 if(!process.env.PORT){
     throw new Error('Set value for process.env.PORT');
@@ -43,7 +44,7 @@ MongoClient.connect( process.env.MONGODB_URI ,
     },
      function(err,client){
     if(err){
-         
+         console.log('err mongo --> ',err)
         throw err;
     }
          
@@ -73,6 +74,7 @@ MongoClient.connect( process.env.MONGODB_URI ,
     // });
     app.listen({ port: process.env.PORT }, () => {
         console.log(`🚀  Server ready at port ${process.env.PORT} ok`);
+        console.log('dirname',__dirname);
       });
         
 });
