@@ -43,7 +43,7 @@
                                       <a class="btn color-cabecera" title="Edit"  role="button" @click.prevent="editExpense(entry)" >
                                         <i class=" fa fa-pencil-square-o" style="color:white;" aria-hidden="true"></i>
                                       </a>
-                                      <a class="btn color-cabecera" title="Delete" role="button" @click.prevent="deleteExpense(entry)" >
+                                      <a class="btn color-cabecera" title="Delete" role="button" @click.prevent="deleteExpense(entry._id)" >
                                         <i class=" fa fa-trash" style="color:white;" aria-hidden="true"></i>
 
                                       </a> 
@@ -124,10 +124,33 @@ export default {
           this.$parent.mode ='edit';
           // this.$parent.expenseEdit = {...ele };
           this.$parent.sendEditFormData(ele);
-        },deleteExpense: function (item) {
-          console.log(item,'deleted');
-          
+        },deleteExpense: function (id) {
+          console.log(id,'deleted');
+          this.confirmDeleteExpense(id);
+        },
+        confirmDeleteExpense: function(id){
+            axios({
+            url: '/graphql',
+            method: 'post',
+            data: {
+            query: `mutation removeExpense{                  
+                deleteExpense(
+                _id: "${id}"                
+                )
+            }`
+            }
+        })
+        .then(r => {
+            console.log('deleted record successfull',r.data);
+            //this.$emit('update-expense', Vue.util.extend({},this.entity));
+            this.$parent.deleteItemExpense(id);
+            })
+        .catch(function (error) {
+            console.log(error);
+        });
         }
+
+
       }
 }
 </script>

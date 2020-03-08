@@ -1,6 +1,6 @@
-// import { ObjectId } from "mongodb";
+//import { ObjectId } from "mongodb";
 
-const ObjectId = require('mongodb');
+const {ObjectId } = require('mongodb');
 
 const EXPENSE_ADDED = 'EXPENSE_ADDED';
 const TYPE_OF_EXPENSE_ADDED = 'TYPE_OF_EXPENSE_ADDED';
@@ -15,10 +15,19 @@ const createExpense = async (parent, args, {Expenses, pubsub}, info) =>{
     return newExpense;
 }
 const editExpense = async (parent, args, {Expenses}, info) =>{
-     
+        const collection = (process.env.MONGODB_COLLECTION || 'expenses')+'.$';
         const _id = args._id;
         delete args._id;
-        await Expenses.updateOne({ "_id": ObjectId(_id) }, { $set: args });
+        console.log('recibido ');
+         
+        // await Expenses.updateOne({ _id :  ObjectId(_id) },
+        // { $set: { description: args.description } 
+        // });
+
+        await Expenses.findOneAndUpdate({ _id: ObjectId(_id) }, { $set: args });
+
+          
+        // await Expenses.updateOne({ "_id": ObjectId(_id) }, { $set: {args } });
         args._id = _id;
         console.log('amce_Expenses returning fron node js editExpense',args);
         return args;
@@ -27,7 +36,7 @@ const editExpense = async (parent, args, {Expenses}, info) =>{
 
 const deleteExpense = async (parent, args, {Expenses}, info) => {
     try {
-        Expenses.deleteOne({"_id":ObjectId(_id)});
+        Expenses.deleteOne({_id:ObjectId(args._id)});
         return true;
     } catch (error) {
         console.log(error);

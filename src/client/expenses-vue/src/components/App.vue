@@ -69,6 +69,17 @@ export default {
            }
         }
     },
+    deleteItemExpense(_id){
+        console.log('deleteItemExpense',_id);
+        
+        if(_id){
+           const index= this.expenseList.findIndex(x => x._id == _id);
+           
+           if(index>=0){ 
+               this.expenseList.splice(index, 1);
+           }
+        }
+    },
     getAllExpenses(){
 
             console.log('populated list of expenses'); 
