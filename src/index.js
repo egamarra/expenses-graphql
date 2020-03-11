@@ -7,7 +7,8 @@ require('dotenv').config();
 //express
 const express = require('express');
 const app = express(); 
-app.use("/", express.static(__dirname + '/client/expenses-vue/')); 
+// app.use("/", express.static(__dirname + '/client/expenses-vue/')); 
+app.use("/", express.static(__dirname + '/client/expenses-vue-cli/ui/dist')); 
 //0.- Configs
 if(!process.env.PORT){
     throw new Error('Set value for process.env.PORT');

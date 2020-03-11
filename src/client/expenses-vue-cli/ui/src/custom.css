@@ -1,0 +1,9 @@
+.color-cabecera{
+    background-color: #5f27cd;
+    color: white;
+    padding-right: 1.5rem;
+}
+
+.has-error .help-block {
+    color: #5f27cd;
+  }
