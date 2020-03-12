@@ -6,14 +6,14 @@
       <div class="col-md-12">    
         <div class="card rounded-0">
           <div class="card-header">
-              <h3 class="mb-0">List of Expenses</h3>
+              <h3 class="mb-0">List of Expenses</h3>        
           </div>
           <div class="card-body">
                 <div >
                   <form id="search">
                     <div class="form-group">
                       <label for="query">Search:</label> 
-                     <input class="form-control" name="query" v-model="filterKey">
+                     <input class="form-control search-input" placeholder="Enter text for filter" name="query" v-model="filterKey">
                     </div>
                   </form>
                     
@@ -40,10 +40,14 @@
                                     <td> {{ entry.date }}</td>
                                     <td> {{ entry.typeOfExpense }}</td>
                                     <td  style="white-space: nowrap" class="align-middle ">
-                                      <a class="btn" title="Edit"  role="button" @click.prevent="editExpense(entry)" >                                        
+                                      <!-- <a class="btn" title="Edit"  role="button" @click.prevent="editExpense(entry)" >                                        
                                         <font-awesome-icon :icon="['fa', 'edit']" />
-                                      </a>
-                                      <a class="btn " title="Delete" role="button" @click.prevent="deleteExpense(entry._id)" >                                        
+                                      </a> -->
+                                     <router-link :to="{name:'Expense', params: { expense: entry}}">
+                                       <font-awesome-icon :icon="['fa', 'edit']" />
+                                     </router-link>  
+
+                                      <a class="pl-1" href="#" title="Delete" role="button" @click.prevent="deleteExpense(entry._id)" >                                        
                                         <font-awesome-icon :icon="['fa', 'trash']" />
                                       </a> 
                                     </td>
@@ -72,14 +76,16 @@ export default {
       columns: Array 
     },
     data(){
-        var sortOrders = {}
+      var sortOrders = {};
       this.columns.forEach(function (key) {
         sortOrders[key] = 1
-      })
+      });
+       
+      sortOrders['date']= -1; // descendent
         return {
             title: 'Expenses List',
             filterKey: '',
-            sortKey: '',
+            sortKey: 'date',
             sortOrders: sortOrders
         }
     }, 

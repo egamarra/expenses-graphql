@@ -1,4 +1,5 @@
 # ui
+npm install -g @vue/cli @vue/cli-service-global
 
 ## Project setup
 ```
@@ -17,3 +18,4 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+

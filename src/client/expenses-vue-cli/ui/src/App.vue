@@ -3,7 +3,8 @@
     <div id="nav">
       <router-link to="/">Expenses</router-link> |
       <router-link to="/new">New</router-link> |
-      <router-link to="/about">About</router-link>      
+      <router-link to="/about">About</router-link> | 
+      <a href="/graphql">Graphql query</a>     
     </div>
     <router-view/>
   </div>

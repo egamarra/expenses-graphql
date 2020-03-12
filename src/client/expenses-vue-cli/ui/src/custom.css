@@ -1,9 +1,12 @@
 .color-cabecera{
-    background-color: #5f27cd;
+    background-color: #42b983;
     color: white;
     padding-right: 1.5rem;
 }
 
 .has-error .help-block {
     color: #5f27cd;
+  }
+  .search-input {
+      background-color: #f1f1e1;
   }
