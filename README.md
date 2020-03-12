@@ -6,6 +6,10 @@ Store Expenses in MongoDB using graphql and Node
 
 #node version 12.13.0
 #package json add  "type": "module"
+
+
+rename .env_temp to .env
+
 # .env ======
 PORT=4000
 MONGODB_URI=mongodb://user:password@localhost:27017
@@ -68,3 +72,5 @@ mutation createExpense {
 }
 
 # feature deploy
+
+you can use mongo atlas or mongo over docker
