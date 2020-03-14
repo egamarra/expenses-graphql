@@ -91,7 +91,7 @@ export default {
       },
       saveExpense: function () {
             axios({
-          url: 'http://localhost:4000/graphql',
+          url: '/graphql',
           method: 'post',
           data: {
           query: `mutation saveExpense{  
@@ -119,7 +119,7 @@ export default {
       },
         editExpense: function(){
             axios({
-            url: 'http://localhost:4000/graphql',
+            url: '/graphql',
             method: 'post',
             data: {
             query: `mutation updateExpense{                  

@@ -68,7 +68,7 @@ export default {
 
             console.log('populated list of expenses'); 
             axios({
-                url: 'http://localhost:4000/graphql',
+                url: '/graphql',
                 method: 'post',
                 data: {
                   query: `
