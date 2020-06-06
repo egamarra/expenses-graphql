@@ -19,7 +19,7 @@
   "author": "Edgar Gamarra",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.11.0",
+    "apollo-server": "^2.14.2",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
     "mongodb": "^3.5.4"
